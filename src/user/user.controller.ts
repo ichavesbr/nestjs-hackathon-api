@@ -1,25 +1,25 @@
 import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserService } from './user.service';
 
 @Controller('user') // rota /user
 export class UserController {
+  constructor(private readonly userService: UserService) {}
+
   @Get() // cria método HTTP GET --> /user/igor
   // cria método para buscar query name na url. --> /user?name=...
   getUsers(@Query('name') name: string) {
-    const users = [
-      { id: 1, name: 'John' },
-      { id: 2, name: 'Igor' },
-    ];
+    return this.userService.findAllUsers(name);
 
     // verifica se tem o parâmetro "name" na url. --> /user?name=...
-    if (name) {
-      return users.filter((user) =>
-        // verifica se dentro do array "users" tem algum name igual ao do parâmetro da url
-        user.name.toLowerCase().includes(name.toLowerCase()),
-      );
-    }
-    return users;
+    // if (name) {
+    //   return users.filter((user) =>
+    //     // verifica se dentro do array "users" tem algum name igual ao do parâmetro da url
+    //     user.name.toLowerCase().includes(name.toLowerCase()),
+    //   );
+    // }
+    // return users;
   }
 
   @Get(':id') // cria método HTTP GET com id dinâmico --> /user/:id
