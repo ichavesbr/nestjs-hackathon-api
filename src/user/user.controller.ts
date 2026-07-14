@@ -9,7 +9,7 @@ export class UserController {
 
   @Get() // cria método HTTP GET --> /user/igor
   // cria método para buscar query name na url. --> /user?name=...
-  getUsers(@Query('name') name: string) {
+  getUsers(@Query('name') name: string): unknown {
     return this.userService.findAllUsers(name);
 
     // verifica se tem o parâmetro "name" na url. --> /user?name=...
