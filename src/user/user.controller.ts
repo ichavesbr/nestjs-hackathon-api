@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
@@ -7,32 +16,28 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get() // cria método HTTP GET --> /user/igor
-  // cria método para buscar query name na url. --> /user?name=...
-  getUsers(@Query('name') name: string): unknown {
+  @Get() // busca query "name" na url. --> /user?name=...
+  getUsers(@Query('name') name: string) {
     return this.userService.findAllUsers(name);
   }
 
-  @Get(':id') // cria método HTTP GET com id dinâmico --> /user/:id
-  // cria método para buscar parâmetro id na url. --> /user/123...
-  findOneUser(@Param('id') id: number): unknown {
-    return this.userService.findOneUser(id);
-
-    // return { id, name: 'Igor' };
+  @Get(':id') // busca parâmetro id na url. --> /user/123...
+  findOneUser(@Param('id') id: string) {
+    return this.userService.findOneUser(Number(id));
   }
 
-  @Post() // cria método HTTP POST --> /user
-  // cria método para criar user novo. createUserDto é o body do POST.
+  @Post() // createUserDto é o body do POST
   createUser(@Body() createUserDto: CreateUserDto) {
-    return { data: createUserDto, message: 'User created successfully' };
+    return this.userService.createUser(createUserDto);
   }
 
-  @Put() // cria método HTTP PUT --> /user/:id
-  // cria método para atualizar user existente. updateUserDto é o body do POST.
+  @Put(':id') // updateUserDto é o body do POST
   updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return {
-      data: { id, ...updateUserDto },
-      message: 'User created successfully',
-    };
+    return this.userService.updateUser(Number(id), updateUserDto);
+  }
+
+  @Delete(':id')
+  deleteUser(@Param('id') id: string) {
+    return this.userService.deleteUser(Number(id));
   }
 }
