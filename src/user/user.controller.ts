@@ -11,21 +11,14 @@ export class UserController {
   // cria método para buscar query name na url. --> /user?name=...
   getUsers(@Query('name') name: string): unknown {
     return this.userService.findAllUsers(name);
-
-    // verifica se tem o parâmetro "name" na url. --> /user?name=...
-    // if (name) {
-    //   return users.filter((user) =>
-    //     // verifica se dentro do array "users" tem algum name igual ao do parâmetro da url
-    //     user.name.toLowerCase().includes(name.toLowerCase()),
-    //   );
-    // }
-    // return users;
   }
 
   @Get(':id') // cria método HTTP GET com id dinâmico --> /user/:id
   // cria método para buscar parâmetro id na url. --> /user/123...
-  getUserById(@Param('id') id: string) {
-    return { id, name: 'Igor' };
+  findOneUser(@Param('id') id: number): unknown {
+    return this.userService.findOneUser(id);
+
+    // return { id, name: 'Igor' };
   }
 
   @Post() // cria método HTTP POST --> /user
