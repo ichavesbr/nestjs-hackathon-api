@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -22,8 +23,8 @@ export class UserController {
   }
 
   @Get(':id') // busca parâmetro id na url. --> /user/123...
-  findOneUser(@Param('id') id: string): unknown {
-    return this.userService.findOneUser(Number(id));
+  findOneUser(@Param('id', ParseIntPipe) id: number): unknown {
+    return this.userService.findOneUser(id);
   }
 
   @Post() // createUserDto é o body do POST
